@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Nguyen Thanh Du (Adrian), Power BI Developer. Case studies in consumer panel, receipt analytics and retail dashboards.">
+<meta property="og:title" content="Adrian Du Portfolio">
+<meta property="og:description" content="Power BI dashboards for consumer panel and retail data: receipt analytics, competitor analysis, basket analytics.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://nguyendu2612.github.io/Du-portfolio/">
+<meta property="og:image" content="https://nguyendu2612.github.io/Du-portfolio/img/og.jpg">
+<link rel="icon" href="img/avatar.webp">
+<title>Adrian Du Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root{
+  --bg:#EEF2F0; --surface:#FFFFFF; --sunk:#E3E9E6; --ink:#10201B; --muted:#52635C; --line:#D2DBD7;
+  --accent:#0A7458; --accent-ink:#FFFFFF; --accent-soft:#D5EDE5; --mark:#F6CD3C;
+  --receipt:#FCFCF7; --receipt-ink:#1C1E1B; --receipt-dim:#6E716A;
+  --shadow:0 1px 2px rgba(16,32,27,.06),0 12px 32px -12px rgba(16,32,27,.18);
+  --display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  --wrap:1160px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0C1411; --surface:#131E1A; --sunk:#0F1916; --ink:#E3ECE8; --muted:#94A69F; --line:#24332D;
+    --accent:#3CC49C; --accent-ink:#06130F; --accent-soft:#16372D; --mark:#E7BC2E;
+    --receipt:#E9EAE3; --receipt-ink:#1C1E1B; --receipt-dim:#62655E;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 16px 40px -16px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0C1411; --surface:#131E1A; --sunk:#0F1916; --ink:#E3ECE8; --muted:#94A69F; --line:#24332D;
+  --accent:#3CC49C; --accent-ink:#06130F; --accent-soft:#16372D; --mark:#E7BC2E;
+  --receipt:#E9EAE3; --receipt-ink:#1C1E1B; --receipt-dim:#62655E;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 16px 40px -16px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;letter-spacing:-.02em}
+p{margin:0}
+.label{font:500 12px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+mark{background:linear-gradient(transparent 55%,var(--mark) 55%,var(--mark) 92%,transparent 92%);color:inherit;padding:0 .08em}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:700 17px/1 var(--display);letter-spacing:-.01em}
+.brand img{width:32px;height:32px;border-radius:50%;object-fit:cover}
+.nav{display:flex;gap:4px;align-items:center}
+.nav a{text-decoration:none;font:500 14px/1 var(--body);padding:9px 12px;border-radius:8px;color:var(--muted)}
+.nav a:hover{color:var(--ink);background:var(--sunk)}
+.nav a.cta{background:var(--ink);color:var(--bg)}
+.nav a.cta:hover{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:640px){.nav a:not(.cta){display:none}}
+
+/* hero */
+.hero{padding-block:clamp(40px,7vw,88px) clamp(32px,5vw,64px)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.85fr);gap:clamp(32px,5vw,72px);align-items:center}
+@media (max-width:880px){.hero .wrap{grid-template-columns:1fr}}
+.who{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.who img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px solid var(--surface);box-shadow:var(--shadow)}
+.who strong{display:block;font:600 16px/1.3 var(--body)}
+.who span{font:400 14px/1.3 var(--body);color:var(--muted)}
+.hero h1{font-size:clamp(38px,6.2vw,72px);line-height:1.02;font-weight:800;margin-bottom:24px}
+.hero .lede{font-size:clamp(17px,1.6vw,19px);color:var(--muted);max-width:56ch;margin-bottom:32px}
+.hero .lede b{color:var(--ink);font-weight:600}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 15px/1 var(--body);padding:14px 20px;border-radius:10px;border:1px solid var(--line);background:var(--surface);transition:transform .15s,border-color .15s}
+.btn:hover{transform:translateY(-1px);border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn svg{width:18px;height:18px}
+
+/* receipt */
+.receipt-holder{display:flex;justify-content:center}
+.receipt{position:relative;width:100%;max-width:360px;background:var(--receipt);color:var(--receipt-ink);font:400 13px/1.55 var(--mono);padding:28px 24px 34px;box-shadow:var(--shadow);transform:rotate(1.6deg);
+  --tooth:10px;
+  -webkit-mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/var(--tooth) 51% repeat-x,conic-gradient(from 135deg at top,#0000,#000 1deg 89deg,#0000 90deg) top/var(--tooth) 51% repeat-x;
+          mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/var(--tooth) 51% repeat-x,conic-gradient(from 135deg at top,#0000,#000 1deg 89deg,#0000 90deg) top/var(--tooth) 51% repeat-x}
+.receipt .c{text-align:center}
+.receipt .store{font:600 16px/1.3 var(--mono);letter-spacing:.12em}
+.receipt .dim{color:var(--receipt-dim)}
+.receipt hr{border:0;border-top:1.5px dashed var(--receipt-dim);margin:12px 0}
+.receipt .row{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}
+.receipt .row span:last-child{white-space:nowrap}
+.receipt .total{font-weight:600;font-size:15px}
+.receipt .bars{height:44px;margin:16px auto 6px;width:82%;background:repeating-linear-gradient(90deg,var(--receipt-ink) 0 2px,transparent 2px 4px,var(--receipt-ink) 4px 5px,transparent 5px 8px,var(--receipt-ink) 8px 11px,transparent 11px 12px,var(--receipt-ink) 12px 13px,transparent 13px 16px)}
+@media (max-width:880px){.receipt{transform:none}}
+
+/* notice */
+.notice{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;font-size:14px;color:var(--muted);max-width:880px}
+.notice svg{flex:none;width:20px;height:20px;color:var(--accent);margin-top:2px}
+
+/* index */
+section{padding-block:clamp(48px,7vw,88px)}
+.sec-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px 32px;margin-bottom:32px}
+.sec-head h2{font-size:clamp(30px,4vw,44px);font-weight:700;line-height:1.08}
+.sec-head p{color:var(--muted);max-width:48ch}
+.index{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.index li{border-bottom:1px solid var(--line)}
+.index a{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1.6fr) auto;gap:8px 24px;align-items:center;padding:18px 4px;text-decoration:none;transition:background .15s,padding .15s}
+.index a:hover{background:var(--surface);padding-inline:14px}
+.index .t{font:700 clamp(18px,2vw,21px)/1.25 var(--display);letter-spacing:-.01em}
+.index .sub{display:block;font:400 13px/1.3 var(--mono);color:var(--muted);margin-top:4px;letter-spacing:.02em}
+.index .d{color:var(--muted);font-size:15px}
+.index .arrow{font:500 18px/1 var(--mono);color:var(--accent)}
+.index li.child .t{font-size:17px;padding-left:22px;position:relative}
+.index li.child .t::before{content:"↳";position:absolute;left:0;color:var(--muted);font-family:var(--mono);font-weight:400}
+@media (max-width:760px){.index a{grid-template-columns:1fr auto}.index .d{display:none}}
+
+/* case */
+.case{padding-block:clamp(40px,6vw,72px);border-top:1px solid var(--line)}
+.case-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 32px;align-items:start;margin-bottom:28px}
+.case-head h2{font-size:clamp(28px,3.8vw,44px);font-weight:700;line-height:1.08;margin-top:10px}
+.case-head .kicker{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:6px;font:500 12px/1 var(--mono);letter-spacing:.04em;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--muted);white-space:nowrap}
+.chip.live{border-color:transparent;background:var(--accent-soft);color:var(--accent)}
+.chip.live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.35}}
+.tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.tools span{font:500 12px/1 var(--mono);padding:6px 9px;border-radius:6px;background:var(--sunk);color:var(--ink)}
+.case .summary{font-size:clamp(17px,1.5vw,19px);max-width:62ch;margin-bottom:32px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px 40px;margin-bottom:36px}
+.cols h3{font:600 12px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.cols ul{margin:0;padding-left:18px;display:grid;gap:8px}
+.cols li::marker{color:var(--muted)}
+.cols p{color:var(--ink)}
+.facts{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 36px;padding:0;list-style:none}
+.facts li{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 18px;min-width:min(100%,180px);flex:1 1 180px}
+.facts b{display:block;font:800 30px/1 var(--display);letter-spacing:-.02em;margin-bottom:6px;font-variant-numeric:tabular-nums}
+.facts span{font-size:14px;color:var(--muted)}
+
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+.shot{all:unset;box-sizing:border-box;cursor:zoom-in;display:flex;flex-direction:column;gap:8px;grid-column:span 2;min-width:0}
+.shot.w3{grid-column:span 3}
+.shot.w4{grid-column:span 4}
+.shot.w6{grid-column:span 6}
+.shot .frame{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);transition:transform .2s,border-color .2s;aspect-ratio:16/9.4}
+.shot .frame img{width:100%;height:100%;object-fit:cover;object-position:top left}
+.shot.tall .frame{aspect-ratio:.84}
+.shot.tall .frame img{object-position:top center}
+.shot.natural .frame{aspect-ratio:auto}
+.shot.natural .frame img{height:auto;object-fit:initial}
+.shot:hover .frame{transform:translateY(-2px);border-color:var(--muted)}
+.shot:focus-visible .frame{outline:2px solid var(--accent);outline-offset:3px}
+.shot figcaption,.shot .cap{font-size:13.5px;color:var(--muted);line-height:1.4}
+.shot .cap b{color:var(--ink);font-weight:600}
+@media (max-width:760px){.gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.shot,.shot.w3{grid-column:span 1}.shot.w4,.shot.w6{grid-column:span 2}}
+@media (max-width:460px){.shot,.shot.w3{grid-column:span 2}}
+
+/* sub tools (nested under flagship) */
+.support{margin-top:48px;background:var(--sunk);border-radius:18px;padding:clamp(20px,3vw,36px)}
+.support>.label{display:block;margin-bottom:6px}
+.support>h3{font-size:clamp(22px,2.6vw,28px);font-weight:700;margin-bottom:8px}
+.support>p{color:var(--muted);max-width:62ch;margin-bottom:28px}
+.tool{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:clamp(18px,2.6vw,28px)}
+.tool+.tool{margin-top:18px}
+.tool h4{font:700 clamp(20px,2.2vw,24px)/1.15 var(--display);letter-spacing:-.015em;margin:0 0 8px}
+.tool>p{color:var(--muted);max-width:66ch;margin-bottom:20px}
+.tool .cols{margin-bottom:24px}
+.rules{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px;padding:0;list-style:none}
+.rules li{font:500 13px/1.3 var(--mono);padding:8px 10px;border:1px dashed var(--muted);border-radius:8px}
+
+/* about */
+.about .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:clamp(28px,5vw,72px)}
+@media (max-width:820px){.about .wrap{grid-template-columns:1fr}}
+.about h2{font-size:clamp(30px,4vw,44px);font-weight:700;line-height:1.08;margin-bottom:16px}
+.about .intro{color:var(--muted);font-size:17px;max-width:46ch}
+.goals{display:grid;gap:16px}
+.goal{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 24px}
+.goal .label{color:var(--accent);margin-bottom:8px;display:block}
+.stack{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:10px;margin-top:28px}
+.stack div{border-top:2px solid var(--ink);padding-top:10px}
+.stack b{display:block;font:600 15px/1.3 var(--body)}
+.stack span{font-size:13.5px;color:var(--muted)}
+
+/* footer */
+footer{background:var(--ink);color:var(--bg);padding-block:clamp(48px,7vw,80px) 40px}
+footer .wrap{display:grid;gap:28px}
+footer h2{font-size:clamp(32px,5vw,56px);font-weight:800;line-height:1.02;max-width:18ch}
+footer .btn{background:transparent;color:var(--bg);border-color:color-mix(in srgb,var(--bg) 35%,transparent)}
+footer .btn:hover{border-color:var(--bg)}
+footer .btn.primary{background:var(--bg);color:var(--ink);border-color:var(--bg)}
+footer small{font:400 12px/1.5 var(--mono);opacity:.6;letter-spacing:.03em}
+
+/* lightbox */
+dialog.lb{border:0;padding:0;background:transparent;max-width:min(1400px,96vw);width:100%;max-height:94vh;color:#EDEFEE}
+dialog.lb::backdrop{background:rgba(6,12,10,.88);backdrop-filter:blur(4px)}
+.lb-inner{display:grid;gap:12px}
+.lb-img{max-height:80vh;width:auto;max-width:100%;margin:0 auto;border-radius:8px;background:#fff}
+.lb-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px}
+.lb-bar .cap{flex:1;min-width:0}
+.lb-bar button{all:unset;cursor:pointer;font:500 14px/1 var(--mono);padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.25);color:#EDEFEE;white-space:nowrap}
+.lb-bar button:hover{border-color:#fff}
+.lb-bar button:focus-visible{outline:2px solid #3CC49C}
+.lb-count{font:400 12px/1 var(--mono);opacity:.7}
+
+@media print{
+  .top,.lb,.btns{display:none!important}
+  body{background:#fff;color:#000}
+  .case{break-inside:avoid-page}
+  .shot .frame{box-shadow:none}
+}
+</style>
+</head>
+<body>
+
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="img/avatar.webp" alt="">Adrian Du</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a class="cta" href="https://www.linkedin.com/in/nguyenthanhdu/" target="_blank" rel="noopener">LinkedIn</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <div class="who">
+          <img src="img/avatar.webp" alt="Portrait of Nguyen Thanh Du (Adrian)">
+          <div><strong>Nguyen Thanh Du (Adrian)</strong><span>Power BI Developer · Consumer &amp; retail data</span></div>
+        </div>
+        <h1>I turn shopper receipts into dashboards <mark>people act on</mark>.</h1>
+        <p class="lede">I work on consumer panel and retail audit projects end to end: I design how the data gets captured, clean and model it with <b>Power Query, DAX and SQL</b>, and ship <b>Power BI</b> dashboards for clients and for the operations team behind the panel.</p>
+        <div class="btns">
+          <a class="btn primary" href="#work">See the case studies
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg></a>
+          <a class="btn" href="https://www.linkedin.com/in/nguyenthanhdu/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+            Connect on LinkedIn</a>
+        </div>
+      </div>
+
+      <div class="receipt-holder">
+        <div class="receipt" role="img" aria-label="Summary styled as a shop receipt: 6 Power BI dashboards, about 550 SKUs mapped in 2 days, about 100 receipts cleaned by hand, 4 client projects and 2 internal tools.">
+          <div class="c store">ADRIAN'S DATA MART</div>
+          <div class="c dim">Power BI · Consumer panel · Retail</div>
+          <hr>
+          <div class="row dim"><span>ITEM</span><span>QTY</span></div>
+          <div class="row"><span>Power BI dashboards</span><span>6</span></div>
+          <div class="row"><span>SKUs mapped to master</span><span>~550</span></div>
+          <div class="row dim"><span>&nbsp;&nbsp;in 2 days, via VBA</span><span></span></div>
+          <div class="row"><span>Receipts cleaned by hand</span><span>~100</span></div>
+          <div class="row"><span>DAX · Power Query</span><span>daily</span></div>
+          <div class="row"><span>SQL · Python · VBA</span><span>&#10003;</span></div>
+          <hr>
+          <div class="row"><span>Client projects</span><span>4</span></div>
+          <div class="row"><span>Internal ops tools</span><span>2</span></div>
+          <hr>
+          <div class="row total"><span>TOTAL</span><span>insight</span></div>
+          <div class="row dim"><span>Paid with</span><span>curiosity</span></div>
+          <div class="bars" aria-hidden="true"></div>
+          <div class="c dim">THANK YOU · SCROLL FOR DETAILS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <p class="notice">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      <span>These projects were built for clients under confidentiality. Brand data in the screenshots is masked or replaced with illustrative values, so the numbers shown do not reflect real market results. The structure, logic and design of each dashboard are real.</span>
+    </p>
+  </div>
+
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Selected work</h2>
+        <p>One continuously running panel project with the two internal tools that keep it clean, plus three client dashboards.</p>
+      </div>
+      <ol class="index">
+        <li><a href="#receipt-panel"><span><span class="t">Shopper Receipt Tracking &amp; Behavior Analytics</span><span class="sub">Flagship · ongoing panel</span></span><span class="d">Receipt uploads turned into trend, basket and shopper-journey analysis</span><span class="arrow">→</span></a></li>
+        <li class="child"><a href="#streak"><span><span class="t">Panelist Upload Streak</span><span class="sub">Internal ops tool</span></span><span class="d">Finds active, qualified panelists and calculates rewards</span><span class="arrow">→</span></a></li>
+        <li class="child"><a href="#qc"><span><span class="t">Data Quality Check</span><span class="sub">Internal ops tool</span></span><span class="d">Guided daily cleaning checklist for non-technical staff</span><span class="arrow">→</span></a></li>
+        <li><a href="#competitor"><span><span class="t">Competitor Analysis Dashboard</span><span class="sub">Pharmacy retail · audit research</span></span><span class="d">Estimated revenue and foot traffic for two pharmacy chains</span><span class="arrow">→</span></a></li>
+        <li><a href="#basket"><span><span class="t">Retail Basket Analytics</span><span class="sub">Supermarket · receipt OCR</span></span><span class="d">Basket size, product mix and cross-selling from scanned receipts</span><span class="arrow">→</span></a></li>
+        <li><a href="#promo"><span><span class="t">Store Promotion Report</span><span class="sub">FMCG · mystery shopping</span></span><span class="d">SKU pricing and POSM presence across stores</span><span class="arrow">→</span></a></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- FLAGSHIP -->
+  <article class="case" id="receipt-panel" data-gallery>
+    <div class="wrap">
+      <div class="case-head">
+        <div>
+          <div class="kicker"><span class="label">Flagship project</span><span class="chip live">Ongoing</span></div>
+          <h2>Shopper Receipt Tracking &amp; Behavior Analytics</h2>
+          <div class="tools"><span>Power BI</span><span>DAX</span><span>Power Query</span><span>Mobile app data design</span><span>Periodic reporting</span></div>
+        </div>
+      </div>
+      <p class="summary">A continuously running consumer panel. Panelists scan and upload their receipts through a mobile app, each receipt is parsed and cleaned in an internal web tool, and the line-level data (SKU, date and time, amount, quantity, store) feeds ongoing analysis of brands, baskets and shopper journeys.</p>
+
+      <div class="cols">
+        <div>
+          <h3>My role</h3>
+          <ul>
+            <li>Designed the data capture flow for the app: which fields to record and at what level of detail, so the data arrives analysis-ready and matches client requirements.</li>
+            <li>Built the dashboard that turns the incoming receipt stream into trend, ranking and behavior views.</li>
+            <li>Ran ad-hoc analyses and custom metrics when the standard views could not answer a client's question.</li>
+            <li>Wrote periodic reports that turn dashboard numbers into a story for stakeholders.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Analysis covered</h3>
+          <ul>
+            <li><b>Trends:</b> purchase volume and spend over time, by brand and category</li>
+            <li><b>Market basket:</b> which SKUs and brands are bought together</li>
+            <li><b>Brand &amp; SKU ranking:</b> share of wallet, penetration, repeat rate</li>
+            <li><b>Shopper journey:</b> purchase frequency, store preference, switching over time</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="gallery">
+        <button class="shot w4" type="button"><span class="frame"><img src="img/receipt-dashboard.webp" alt="Receipt panel dashboard showing filters, repeat purchase chart and shopper structure table" loading="lazy"></span><span class="cap"><b>Analytics dashboard.</b> Tabulation, ranking, loyalty, cross-shopper, gain-loss and co-purchase views. Sample screen with masked data.</span></button>
+        <button class="shot tall" type="button"><span class="frame"><img src="img/receipt-app.webp" alt="Mobile app screen used by panelists to upload receipts" loading="lazy"></span><span class="cap"><b>Collection app.</b> Where panelists scan and upload receipts.</span></button>
+      </div>
+
+      <div class="support">
+        <span class="label">Built to support the panel</span>
+        <h3>Two internal tools that keep the data clean</h3>
+        <p>The client dashboard is only as good as the receipts behind it. These two tools are used by the operations team every day.</p>
+
+        <div class="tool" id="streak">
+          <h4>Panelist Upload Streak</h4>
+          <p>A focused Power BI tool that checks which panelists are active and eligible, so only qualified panelists feed the main analysis. It went through three versions as the team added requirements, and now also calculates rewards.</p>
+          <ul class="rules" aria-label="Eligibility rules">
+            <li>&gt; 10 receipts in 30 days</li>
+            <li>&gt; 7 days in the panel</li>
+            <li>rejection rate &lt; 20%</li>
+            <li>not on the blocked list</li>
+          </ul>
+          <div class="cols">
+            <div>
+              <h3>My role</h3>
+              <ul>
+                <li>Gathered requirements with the operations team in detail before building.</li>
+                <li>Sourced data through Power BI dataflows from the team's database.</li>
+                <li>Cleaned and shaped it in Power Query (blank phone numbers, a calendar table, MonthYear and WeekNum sorting).</li>
+                <li>Wrote the criteria in DAX, choosing row context or measures depending on the result needed.</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Output</h3>
+              <p>A monthly list of qualified panelists for any chosen period, which keeps the main project's panel clean and eligible, and a reward view for panelists who meet the validity rules.</p>
+            </div>
+          </div>
+          <div class="gallery">
+            <button class="shot w3" type="button"><span class="frame"><img src="img/streak-v1.webp" alt="First version of streak dashboard with weekly streak grid" loading="lazy"></span><span class="cap"><b>Version 1.</b> Custom HTML visual for weekly streaks. Fell back to raw data because users needed Excel exports.</span></button>
+            <button class="shot w3" type="button"><span class="frame"><img src="img/streak-v1-qc.webp" alt="Drill-through QC page for a selected panelist" loading="lazy"></span><span class="cap"><b>Version 1, QC page.</b> Drill-through to check previously selected panelists.</span></button>
+            <button class="shot" type="button"><span class="frame"><img src="img/streak-v2.webp" alt="Second version of the dashboard showing all panelists" loading="lazy"></span><span class="cap"><b>Version 2.</b> Reworked to user requirements, all panelists.</span></button>
+            <button class="shot" type="button"><span class="frame"><img src="img/streak-v2-filtered.webp" alt="Second version filtered to top streaks in June" loading="lazy"></span><span class="cap"><b>Version 2, filtered.</b> Highest streaks in June.</span></button>
+            <button class="shot" type="button"><span class="frame"><img src="img/streak-v2-conditions.webp" alt="Page with extra streak conditions per panelist" loading="lazy"></span><span class="cap"><b>Extra conditions.</b> Streak rules per individual panelist.</span></button>
+            <button class="shot w6 natural" type="button"><span class="frame"><img src="img/streak-reward.webp" alt="Current version with upload conditions and rewards" loading="lazy"></span><span class="cap"><b>Current version.</b> Adds upload conditions and rewards panelists who meet the validity criteria.</span></button>
+          </div>
+        </div>
+
+        <div class="tool" id="qc">
+          <h4>Data Quality Check</h4>
+          <p>A guided dashboard for non-technical team members to review and clean incoming receipt data section by section before it reaches the client dashboard. It confirms every section was updated each day and flags cleaning steps still outstanding.</p>
+          <div class="cols">
+            <div>
+              <h3>My role</h3>
+              <ul>
+                <li>Mapped the data sections that need daily cleaning and wrote a checklist for each, based on the most common problems in raw uploads (wrong SKU mapping, cheating, inappropriate uploads).</li>
+                <li>Designed a simple guided interface so cleaners work correctly without touching queries or DAX.</li>
+                <li>Built daily freshness checks that flag any section falling behind.</li>
+                <li>Logged a status for every cleaner action and used that log to calculate each cleaner's pay for the work they actually completed.</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Output</h3>
+              <p>A daily checklist of cleaning status for every data section, so only clean, complete data reaches the official dashboard.</p>
+            </div>
+          </div>
+          <div class="gallery">
+            <button class="shot w6 natural" type="button"><span class="frame"><img src="img/qc-status.webp" alt="Daily status overview of data cleaning sections" loading="lazy"></span><span class="cap"><b>Daily status overview.</b> Each section's freshness and cleaning status at a glance.</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- COMPETITOR -->
+  <article class="case" id="competitor" data-gallery>
+    <div class="wrap">
+      <div class="case-head">
+        <div>
+          <div class="kicker"><span class="label">Client project · Pharmacy retail</span><span class="chip">Delivered</span></div>
+          <h2>Competitor Analysis Dashboard</h2>
+          <div class="tools"><span>Audit research</span><span>Power Query</span><span>DAX</span><span>Drill-through</span></div>
+        </div>
+      </div>
+      <p class="summary">The client wanted to compare two leading pharmacy chains, Pharmacity and Long Châu. We ran audit research at store level, and I turned it into a dashboard that estimates each chain's revenue and foot traffic. I proposed the dashboard layout, and the client approved it: direct, actionable metrics for analysts in an efficient layout.</p>
+      <ul class="facts">
+        <li><b>~100</b><span>receipts cleaned over 2 weeks</span></li>
+        <li><b>2</b><span>chains compared weekly and monthly</span></li>
+        <li><b>3</b><span>outputs: revenue, traffic, market metrics</span></li>
+      </ul>
+      <div class="cols">
+        <div>
+          <h3>My role</h3>
+          <ul>
+            <li><b>Client alignment:</b> clarified requirements and KPIs, agreeing to estimate revenue and traffic each month.</li>
+            <li><b>Data cleaning:</b> cleaned about 100 receipts over two weeks, reviewed store video footage to count foot traffic, and reformatted the data in Power Query.</li>
+            <li><b>Model and dashboard:</b> built the data model and relationships, wrote DAX measures, and created drill-through pages in Power BI.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Output</h3>
+          <ul>
+            <li>Estimated weekly and monthly revenue per chain</li>
+            <li>Estimated weekly and monthly foot traffic</li>
+            <li>Market metrics comparing the two chains' store performance and positioning</li>
+          </ul>
+        </div>
+      </div>
+      <div class="gallery">
+        <button class="shot w6 natural" type="button"><span class="frame"><img src="img/competitor-workflow.webp" alt="Mind map of project overview, role and outputs" loading="lazy"></span><span class="cap"><b>Project map.</b> Objective, method, my role and outputs on one page.</span></button>
+        <button class="shot w3" type="button"><span class="frame"><img src="img/competitor-login.webp" alt="Dashboard landing page" loading="lazy"></span><span class="cap"><b>Landing page.</b></span></button>
+        <button class="shot w3" type="button"><span class="frame"><img src="img/competitor-analytics.webp" alt="Analytics page comparing chains" loading="lazy"></span><span class="cap"><b>Analytics page.</b> Revenue and traffic side by side.</span></button>
+        <button class="shot w3" type="button"><span class="frame"><img src="img/competitor-detail.webp" alt="Detailed drill-through page" loading="lazy"></span><span class="cap"><b>Detail page.</b> Drill-through by store.</span></button>
+        <button class="shot w3" type="button"><span class="frame"><img src="img/competitor-tooltip.webp" alt="Tooltip page" loading="lazy"></span><span class="cap"><b>Tooltip page.</b> Context on hover without leaving the view.</span></button>
+      </div>
+    </div>
+  </article>
+
+  <!-- BASKET -->
+  <article class="case" id="basket" data-gallery>
+    <div class="wrap">
+      <div class="case-head">
+        <div>
+          <div class="kicker"><span class="label">Client project · Supermarket</span><span class="chip">Delivered</span></div>
+          <h2>Retail Basket Analytics</h2>
+          <div class="tools"><span>AI OCR receipts</span><span>VBA</span><span>SQL</span><span>Power Query</span><span>DAX</span></div>
+        </div>
+      </div>
+      <p class="summary">Shoppers at a Lotte supermarket submitted receipts through our in-house app, which reads them with AI OCR. I mapped the products, built the model and delivered a dashboard on shopping frequency, basket size and product mix.</p>
+      <ul class="facts">
+        <li><b>~550</b><span>SKUs matched to master data</span></li>
+        <li><b>2 days</b><span>to map them, using VBA fuzzy matching</span></li>
+        <li><b>1</b><span>SQL source feeding Power BI</span></li>
+      </ul>
+      <div class="cols">
+        <div>
+          <h3>My role</h3>
+          <ul>
+            <li><b>Data cleaning:</b> used VBA approximate matching to map about 550 SKUs to master data within two days, created master records for new items, and integrated them into the team's SQL database.</li>
+            <li><b>Dashboard:</b> queried SQL as the single source for Power BI, did one-time shaping in Power Query, wrote DAX measures, built the visuals and pulled out the insights.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Delivered</h3>
+          <ul>
+            <li>Customer demographics</li>
+            <li>Incidence rate by product, category and brand</li>
+            <li>Average SKUs and categories per transaction</li>
+            <li>Average order value</li>
+            <li>Cross-selling: how often two products appear in one basket</li>
+          </ul>
+        </div>
+      </div>
+      <div class="gallery">
+        <button class="shot w6 natural" type="button"><span class="frame"><img src="img/basket-workflow.webp" alt="Workflow diagram of the retail basket project" loading="lazy"></span><span class="cap"><b>Project flow.</b> From receipt collection to the delivered metrics.</span></button>
+        <button class="shot natural" type="button"><span class="frame"><img src="img/basket-1.webp" alt="Basket dashboard page 1" loading="lazy"></span><span class="cap"><b>Shopper overview.</b></span></button>
+        <button class="shot natural" type="button"><span class="frame"><img src="img/basket-2.webp" alt="Basket dashboard page 2" loading="lazy"></span><span class="cap"><b>Purchase overview.</b></span></button>
+        <button class="shot natural" type="button"><span class="frame"><img src="img/basket-3.webp" alt="Basket dashboard page 3" loading="lazy"></span><span class="cap"><b>Cross-selling.</b></span></button>
+      </div>
+    </div>
+  </article>
+
+  <!-- PROMO -->
+  <article class="case" id="promo" data-gallery>
+    <div class="wrap">
+      <div class="case-head">
+        <div>
+          <div class="kicker"><span class="label">Client project · FMCG</span><span class="chip">Delivered</span></div>
+          <h2>Store Promotion Report</h2>
+          <div class="tools"><span>Mystery shopping</span><span>Dimensional model</span><span>DAX</span><span>Tooltips</span><span>Map visual</span></div>
+        </div>
+      </div>
+      <p class="summary">Store-level data collected through mystery shopping: shoppers asked sellers for the prices of the client's Milo SKUs and recorded whether promotion materials (standee, booth, pallet) were in place.</p>
+      <div class="cols">
+        <div>
+          <h3>My role</h3>
+          <ul>
+            <li>Built the dimensional model and relationships.</li>
+            <li>Wrote DAX measures for the KPIs and insights.</li>
+            <li>Used tooltips for quick, in-context views of the data.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Output</h3>
+          <ul>
+            <li>Presence rate of each SKU and each POSM type across stores and areas</li>
+            <li>How sellers perceive the products compared with market alternatives</li>
+          </ul>
+        </div>
+      </div>
+      <div class="gallery">
+        <button class="shot w3" type="button"><span class="frame"><img src="img/promo-login.webp" alt="Report landing page" loading="lazy"></span><span class="cap"><b>Landing page.</b></span></button>
+        <button class="shot w3" type="button"><span class="frame"><img src="img/promo-summary.webp" alt="Summary page with KPI cards, POSM donuts and area table" loading="lazy"></span><span class="cap"><b>Summary.</b> KPI cards, POSM presence and SKU share by area.</span></button>
+        <button class="shot w3" type="button"><span class="frame"><img src="img/promo-detail.webp" alt="Detail page" loading="lazy"></span><span class="cap"><b>Detail page.</b></span></button>
+        <button class="shot w3" type="button"><span class="frame"><img src="img/promo-map.webp" alt="Map of POSM distribution" loading="lazy"></span><span class="cap"><b>POSM map.</b> Where each material was found.</span></button>
+      </div>
+    </div>
+  </article>
+
+  <section class="about" id="about">
+    <div class="wrap">
+      <div>
+        <span class="label">About</span>
+        <h2>Curious, quick to learn, happiest inside messy data.</h2>
+        <p class="intro">I enjoy turning raw data into clear insight about how customers behave and what they experience. Every new tool or dataset gives me a burst of energy.</p>
+        <div class="stack">
+          <div><b>Power BI</b><span>DAX, Power Query, dataflows, drill-through, tooltips</span></div>
+          <div><b>Data prep</b><span>SQL, VBA, Python, Excel</span></div>
+          <div><b>Research data</b><span>Consumer panels, receipt OCR, retail audits, mystery shopping</span></div>
+        </div>
+      </div>
+      <div class="goals">
+        <div class="goal">
+          <span class="label">Next step</span>
+          <p>Master the full data analyst workflow and ETL process, deepen SQL, Power BI and Python, and use that to deliver insights that help clients and customers make better decisions.</p>
+        </div>
+        <div class="goal">
+          <span class="label">Where I'm heading</span>
+          <p>Become a senior data analyst who builds customer-insight platforms. Grow T-shaped: broad across data, AI and BI, deep in analytics, and able to automate pipelines with APIs and bring outside data sources into the analysis.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="label" style="color:inherit;opacity:.65">Contact</span>
+    <h2>Have a dataset that needs a dashboard?</h2>
+    <div class="btns">
+      <a class="btn primary" href="https://www.linkedin.com/in/nguyenthanhdu/" target="_blank" rel="noopener">Message me on LinkedIn</a>
+      <a class="btn" href="https://github.com/nguyendu2612" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <small>© Nguyen Thanh Du (Adrian) · Screenshots use masked or illustrative data</small>
+  </div>
+</footer>
+
+<dialog class="lb" id="lb" aria-label="Screenshot viewer">
+  <div class="lb-inner">
+    <img class="lb-img" id="lb-img" alt="">
+    <div class="lb-bar">
+      <button type="button" id="lb-prev" aria-label="Previous screenshot">← Prev</button>
+      <div class="cap"><div id="lb-cap"></div><div class="lb-count" id="lb-count"></div></div>
+      <button type="button" id="lb-next" aria-label="Next screenshot">Next →</button>
+      <button type="button" id="lb-close" aria-label="Close viewer">Close ✕</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(function(){
+  var lb=document.getElementById('lb'), img=document.getElementById('lb-img'),
+      cap=document.getElementById('lb-cap'), count=document.getElementById('lb-count');
+  var group=[], i=0;
+  function show(){
+    var s=group[i], im=s.querySelector('img'), c=s.querySelector('.cap');
+    img.src=im.currentSrc||im.src; img.alt=im.alt;
+    cap.innerHTML=c?c.innerHTML:''; count.textContent=(i+1)+' / '+group.length;
+  }
+  document.querySelectorAll('.shot').forEach(function(s){
+    s.addEventListener('click',function(){
+      group=[].slice.call(s.closest('[data-gallery]').querySelectorAll('.shot'));
+      i=group.indexOf(s); show();
+      if(typeof lb.showModal==='function'){lb.showModal();}else{lb.setAttribute('open','');}
+    });
+  });
+  function step(d){i=(i+d+group.length)%group.length;show();}
+  function close(){if(lb.close)lb.close();else lb.removeAttribute('open');}
+  document.getElementById('lb-prev').onclick=function(){step(-1)};
+  document.getElementById('lb-next').onclick=function(){step(1)};
+  document.getElementById('lb-close').onclick=close;
+  lb.addEventListener('click',function(e){if(e.target===lb)close();});
+  document.addEventListener('keydown',function(e){
+    if(!lb.open)return;
+    if(e.key==='ArrowRight')step(1); else if(e.key==='ArrowLeft')step(-1);
+  });
+})();
+</script>
+
+</body>
+</html>
